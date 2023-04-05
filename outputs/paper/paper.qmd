@@ -1,0 +1,123 @@
+---
+title: "An Exploration into political dynamics of Pre-Revolution Russia"
+subtitle: "My subtitle if needed"
+author: Iz Leitch
+thanks: "Code and data are available at: LINK."
+date: "`r Sys.time()`"
+date-format: "D MMMM YYYY"
+abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(palmerpenguins)
+
+data <- read.csv("C:/Users/iwlle/OneDrive/Desktop/R Projects/partstazh_exploration/partstazh_exploration/inputs/data/partstazh-dat.csv")
+
+
+```
+notes for future self: get amount of people for each party
+length of time in each party would be interesting
+discuss politics of pre-revolution russia/soviet union, bolsheviks vs mensheviks being the major one but the factionalism at play is also very interesting
+
+include a more complete history of the revolution with regards to political identities in early 1900 era russia
+
+missing parties, we lack ukrainian representation in the data set
+
+new understandings of 1900s russian politics, mezhduraionsty party does not have significant information about it
+
+the general absence of information
+
+some people are in multiple parties
+understanding early 1900 era political surveillance
+
+# Introduction
+
+In this paper, using the UCLA Soviet Data Bank and crossing referencing the party ids with the party membership dataset, a deeper understanding of the complex social and political dynamics of Pre and Early-Revolution Russia can be gained beyond the simple Reds vs Whites, and Bolsheviks vs Mensheviks narratives that are so often called on when aiming to explain the political climate. In @sec-data, this paper looks at all the listed parties inside the dataset as a whole, comparing the amount of people in each party, and the average duration they spend with it. In the discussion of the data, we explore the accuracy of the data, the difficulty of 
+
+You can and should cross-reference sections and sub-sections. For instance, @sec-data and @sec-first-point. 
+
+
+
+# Data {#sec-data}
+
+Our data is of penguins (@fig-bills).
+
+```{r}
+#| label: fig-bills
+#| fig-cap: Bills of penguins
+#| echo: false") +
+
+
+  
+```
+
+Talk more about it.
+
+Also bills and their average (@fig-billssssss). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work.)
+
+```{r}
+#| label: fig-billssssss
+#| fig-cap: More bills of penguins
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+
+```
+
+Talk way more about it. 
+
+
+
+# Model {#sec-model}
+
+$$
+Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}
+$$ {#eq-bayes}
+
+@eq-bayes seems useful, eh?
+
+Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
+
+We can use maths by including latex between dollar signs, for instance $\theta$.
+
+
+# Results
+
+# Discussion {#sec-discussion}
+
+## First discussion point {#sec-first-point}
+
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+
+## Second discussion point
+
+## Third discussion point
+
+## Weaknesses and next steps
+
+Weaknesses and next steps should also be included.
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+# Additional details
+
+
+\newpage
+
+
+# References
+
+

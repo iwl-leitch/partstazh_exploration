@@ -11,16 +11,19 @@
 #### Workspace setup ####
 library(opendatatoronto)
 library(tidyverse)
+library(readr)
+library(here)
 # [...UPDATE THIS...]
 
 #### Download data ####
 # [...ADD CODE HERE TO DOWNLOAD...]
 
-
+raw_data <- readr::read_csv(here::here("inputs/data/partstazh-dat.csv"))
 
 #### Save data ####
 # [...UPDATE THIS...]
 # change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+
+write_csv(raw_data, "inputs/data/raw_data.csv") 
 
          

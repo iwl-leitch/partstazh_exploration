@@ -1,0 +1,207 @@
+---
+title: "An Exploration into political dynamics of Pre-Revolution Russia"
+author: Iz Leitch
+thanks: "Code and data are available at: [FILL IN LATER]"
+date: "`r Sys.time()`"
+date-format: "D MMMM YYYY"
+abstract: "This paper explores the legacy of different political groups in pre-revolution Russia. By looking at number of members and length of membership we can discover the different strengths and lasting powers of minor political affiliations prior to the USSR to get a better understanding of their material impact on the Revolution and post-Revolution political landscape."
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+#| 
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(janitor)
+library(scales)
+library(ggplot2)
+library(here)
+library(readr)
+
+## this sets the colour palette for the bar graphs
+colors <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Define the colors for the gradient
+breaks <- c(0, 0.1,1, 10 ,20, 30, 40, max(df$y)) # Define the breaks for the values
+palette <- colorRampPalette(colors)(length(breaks)-1) # Create the color palette
+names(palette) <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Assign names to the palette colors
+
+## this splits the graphs so they can be more easily understood
+graphing_values_cleaned_one_to_sixteen <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[1:16],]
+
+graphing_values_cleaned_seventeen_to_twentysix <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[17:26],]
+
+
+## this graphs all the parties with on average less than one year of participation
+ggplot(graphing_values_cleaned_one_to_sixteen, aes(x = political_party, y = time_spent_in_party[,"mean"], fill = time_spent_in_party[,"count"]))+geom_bar(stat = "identity", width = 0.6) +
+  labs(title = "Average Values of Column C by Unique Values of Column B",
+       x = "Parties",
+       y = "Average Time Spent in Each Party by Years")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.key.height = unit(1, "cm"))+
+  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party[,"count"])), name = "Number of Party Members")
+
+
+##this graphs the parties with more than one average year of participation
+ggplot(graphing_values_cleaned_seventeen_to_twentysix, aes(x = political_party, y = time_spent_in_party[,"mean"], fill = time_spent_in_party[,"count"]))+geom_bar(stat = "identity", width = 0.6) +
+  labs(title = "Average Values of Column C by Unique Values of Column B",
+       x = "Parties",
+       y = "Average Time Spent in Each Party by Years")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.key.height = unit(1, "cm"))+
+  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party[,"count"])), name = "Number of Party Members")
+
+
+## this splits the graphs so they can be more easily understood
+graphing_values_ambiguous_one_to_sixteen <-graphing_values_ambiguous |>
+  select()
+
+graphing_values_ambiguous_seventeen_to_twentysix <-graphing_values_ambiguous[order(graphing_values_ambiguous$political_party)[17:26],]
+
+
+ggplot(graphing_values_ambiguous, aes(x = year_joined_party, y = num_joined, fill = political_party))+geom_col() +
+  labs(title = "Average Values of Column C by Unique Values of Column B",
+       x = "Year Joined A Party",
+       y = "Number of People Joining")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "right")
+
+
+## this one works
+ggplot(graphing_membership_ambiguous, aes(x = political_party, y = number_joined))+geom_bar(stat = "identity") +
+  labs(title = "Average Values of Column C by Unique Values of Column B",
+       x = "Political Party",
+       y = "Number of People Joined")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "right")
+
+
+
+
+
+```
+
+
+# Introduction
+
+In this paper, using the UCLA Soviet Data Bank and crossing referencing the party ids with the party membership dataset, a deeper understanding of the complex social and political dynamics of Pre and Early-Revolution Russia can be gained beyond the simple Reds vs Whites, and Bolsheviks vs Mensheviks narratives that are so often called on when aiming to explain the political climate.@sec-background gives us the foundation to understand the major and minor players as is traditionally understood in Slavic Studies, such that we can validate or invalidate these narratives with the data presented. In @sec-data, this paper looks at all the listed parties inside the dataset as a whole, comparing the amount of people in each party, and the average duration they spend with it. In the discussion of the data, we explore the limitations of the data, and the political implications. @sec-next-steps looks toward the future and what else can be done with this information and data.
+
+You can and should cross-reference sections and sub-sections. For instance, @sec-data and @sec-first-point. 
+
+# Background {#sec-background}
+
+The formation of the Soviet Union is often portrayed in simplistic ways to cater to different narratives, and misunderstands the many nuanced perspectives going into the early days. Basically, there are two major revolutions the October and march(?) revolutions. (look into this because it is hard to explain simply) These revolutions take place in response to the mishandling of the first world war, the lack of rights, and more. This leads to the overthrow of the tsar and the dawn of the soviet era which itself is fraught with internal conflicts. 
+
+Two parties are considered important to the retelling of the revolution, the more centrist menshevik party, and the more radical bolshevik party.
+
+## timeline(#sec-timeline)}
+
+this explains the timeline, and the reds vs whites
+
+## Mensheviks and Bolsheviks {#sec-mensh-bolsh}
+This explains the high level split in the revolutionary party between the mensheviks and Bolsheviks.
+
+notes for future self: get amount of people for each party
+length of time in each party would be interesting
+discuss politics of pre-revolution russia/soviet union, bolsheviks vs mensheviks being the major one but the factionalism at play is also very interesting
+
+include a more complete history of the revolution with regards to political identities in early 1900 era russia
+
+missing parties, we lack ukrainian representation in the data set
+
+new understandings of 1900s russian politics, mezhduraionsty party does not have significant information about it
+
+the general absence of information
+
+some people are in multiple parties
+understanding early 1900 era political surveillance
+# Data {#sec-data}
+
+
+
+```{r}
+#| label: fig-bills
+#| fig-cap: Bills of penguins
+#| echo: false") +
+
+
+  
+```
+
+Talk more about it.
+
+
+
+```{r}
+#| label: fig-billssssss
+#| fig-cap: More bills of penguins
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+
+```
+
+Talk way more about it. 
+
+
+
+# Model {#sec-model}
+
+$$
+Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}
+$$ {#eq-bayes}
+
+@eq-bayes seems useful, eh?
+
+Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
+
+We can use maths by including latex between dollar signs, for instance $\theta$.
+
+
+# Results
+
+# Discussion {#sec-discussion}
+
+## Data Limitations {#sec-data-limit}
+
+this discusses the limitations of the dataset
+
+### Missing Data {@sec-miss-data}
+
+### Bias in Sample {@sec-sample-bias}
+
+### Political Repression {@sec-pol-repress}
+
+## Nationalism {#sec-national}
+
+
+## Longevity
+
+## Major Players
+
+## Minor Players
+
+# Next steps {#sec-next-steps}
+
+Weaknesses and next steps should also be included.
+# Conclusion
+
+# Acknowledgements 
+
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+# Additional details
+
+
+\newpage
+
+
+# References
+
+

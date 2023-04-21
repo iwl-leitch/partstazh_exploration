@@ -9,12 +9,10 @@ format: pdf
 number-sections: true
 bibliography: references.bib
 ---
-
 ```{r}
 #| include: false
 #| warning: false
 #| message: false
-#| 
 library(tidyverse)
 library(dplyr)
 library(knitr)
@@ -23,66 +21,25 @@ library(scales)
 library(ggplot2)
 library(here)
 library(readr)
+```
 
-## this sets the colour palette for the bar graphs
-colors <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Define the colors for the gradient
-breaks <- c(0, 0.1,1, 10 ,20, 30, 40, max(df$y)) # Define the breaks for the values
-palette <- colorRampPalette(colors)(length(breaks)-1) # Create the color palette
-names(palette) <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Assign names to the palette colors
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+graphing_values_cleaned <- readr::read_csv(here::here("inputs/data/graphing_values_cleaned.csv"))
 
-## this splits the graphs so they can be more easily understood
-graphing_values_cleaned_one_to_sixteen <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[1:16],]
+graphing_values_cleaned$political_party <- reorder(graphing_values_cleaned$political_party, graphing_values_cleaned$time_spent_in_party.count)
 
-graphing_values_cleaned_seventeen_to_twentysix <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[17:26],]
-
-
-## this graphs all the parties with on average less than one year of participation
-ggplot(graphing_values_cleaned_one_to_sixteen, aes(x = political_party, y = time_spent_in_party[,"mean"], fill = time_spent_in_party[,"count"]))+geom_bar(stat = "identity", width = 0.6) +
-  labs(title = "Average Values of Column C by Unique Values of Column B",
-       x = "Parties",
-       y = "Average Time Spent in Each Party by Years")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.key.height = unit(1, "cm"))+
-  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party[,"count"])), name = "Number of Party Members")
-
-
-##this graphs the parties with more than one average year of participation
-ggplot(graphing_values_cleaned_seventeen_to_twentysix, aes(x = political_party, y = time_spent_in_party[,"mean"], fill = time_spent_in_party[,"count"]))+geom_bar(stat = "identity", width = 0.6) +
-  labs(title = "Average Values of Column C by Unique Values of Column B",
-       x = "Parties",
-       y = "Average Time Spent in Each Party by Years")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.key.height = unit(1, "cm"))+
-  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party[,"count"])), name = "Number of Party Members")
-
-
-## this splits the graphs so they can be more easily understood
-graphing_values_ambiguous_one_to_sixteen <-graphing_values_ambiguous |>
-  select()
-
-graphing_values_ambiguous_seventeen_to_twentysix <-graphing_values_ambiguous[order(graphing_values_ambiguous$political_party)[17:26],]
-
-
-ggplot(graphing_values_ambiguous, aes(x = year_joined_party, y = num_joined, fill = political_party))+geom_col() +
-  labs(title = "Average Values of Column C by Unique Values of Column B",
-       x = "Year Joined A Party",
-       y = "Number of People Joining")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "right")
-
-
-## this one works
-ggplot(graphing_membership_ambiguous, aes(x = political_party, y = number_joined))+geom_bar(stat = "identity") +
-  labs(title = "Average Values of Column C by Unique Values of Column B",
-       x = "Political Party",
-       y = "Number of People Joined")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "right")
-
-
-
+graphing_membership_ambiguous <- readr::read_csv(here::here("inputs/data/graphing_membership_ambiguous.csv"))
 
 
 ```
 
 
 # Introduction
+
+What do we really know about the Russian Revolutions? 
 
 In this paper, using the UCLA Soviet Data Bank and crossing referencing the party ids with the party membership dataset, a deeper understanding of the complex social and political dynamics of Pre and Early-Revolution Russia can be gained beyond the simple Reds vs Whites, and Bolsheviks vs Mensheviks narratives that are so often called on when aiming to explain the political climate.@sec-background gives us the foundation to understand the major and minor players as is traditionally understood in Slavic Studies, such that we can validate or invalidate these narratives with the data presented. In @sec-data, this paper looks at all the listed parties inside the dataset as a whole, comparing the amount of people in each party, and the average duration they spend with it. In the discussion of the data, we explore the limitations of the data, and the political implications. @sec-next-steps looks toward the future and what else can be done with this information and data.
 
@@ -120,11 +77,29 @@ understanding early 1900 era political surveillance
 
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false") +
+#| label: fig-one
+#| fig-cap: Average Time Spent In Each Party for Parties with Greater than One but Fewer than Ten Members
+#| fig-width: 8
+#| fig-height: 4
+#| echo: false
+#| warning: false
+#| message: false
+## this sets the colour palette for the bar graphs
+colors <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") 
+breaks <- c(2, 4, 6, 10 ,20, 30, 40, max(graphing_values_cleaned$time_spent_in_party.count)) 
+palette <- colorRampPalette(colors)(length(breaks)-1) 
+names(palette) <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") 
 
+## this splits the graphs so they can be more easily understood
+graphing_values_cleaned_one_to_sixteen <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[1:16],]
 
+## this graphs all the parties with on average less than one year of participation
+ggplot(graphing_values_cleaned_one_to_sixteen, aes(x = political_party, y = time_spent_in_party.mean, fill = time_spent_in_party.count))+geom_bar(stat = "identity", width = 0.6) +
+  labs(title = "Average Time Spent In Each Party for Parties with Memberships \n Greater than One but Fewer than Ten Members",
+       x = "Parties",
+       y = "Average Time Spent in Each Party by Years")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),legend.margin = margin(75,0,0), legend.key.height = unit(1.25, "cm"),legend.title.align = 0, legend.title = element_text(angle = 0, vjust = -0.2, hjust = 3), plot.title = element_text(hjust = 0, margin = margin(b=40)), axis.title.y = element_text(angle = 90, vjust = 0.5, hjust= 0.8))+
+  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party.count)), name = "Number of Party Members")
   
 ```
 
@@ -133,16 +108,50 @@ Talk more about it.
 
 
 ```{r}
-#| label: fig-billssssss
-#| fig-cap: More bills of penguins
+#| label: fig-2
+#| fig-cap: Average Time Spent In Each Party for Parties with Greater than Ten Members
 #| echo: false
+#| warning: false
+#| message: false
 #| fig-width: 8
 #| fig-height: 4
+## this sets the colour palette for the bar graphs
+colors <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Define the colors for the gradient
+breaks <- c(2, 4, 6, 10 ,20, 30, 40, max(graphing_values_cleaned$time_spent_in_party.count)) # Define the breaks for the values
+palette <- colorRampPalette(colors)(length(breaks)-1) # Create the color palette
+names(palette) <- c("black", "lightgrey", "blue", "green", "yellow","orange", "red") # Assign names to the palette colors
+
+##this separates the values for parties with a significant amount of members
+graphing_values_cleaned_seventeen_to_twentysix <-graphing_values_cleaned[order(graphing_values_cleaned$political_party)[17:26],]
+##this graphs the parties with more than one average year of participation
+ggplot(graphing_values_cleaned_seventeen_to_twentysix, aes(x = political_party, y = time_spent_in_party.mean, fill = time_spent_in_party.count))+geom_bar(stat = "identity", width = 0.6) +
+  labs(title = "Average Time Spent In Each Party for Parties with Greater than Ten Members",
+       x = "Parties",
+       y = "Average Time Spent in Each Party by Years")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),legend.margin = margin(75,0,0), legend.key.height = unit(1.25, "cm"),legend.title.align = 0, legend.title = element_text(angle = 0, vjust = -0.2, hjust = 3), plot.title = element_text(hjust = 0, margin = margin(b=40)), axis.title.y = element_text(angle = 90, vjust = 0.5, hjust= 1))+
+  scale_fill_gradientn(colors = palette, breaks = breaks, limits = c(0, max(graphing_values_cleaned$time_spent_in_party.count)), name = "Number of Party Members")
 
 ```
 
 Talk way more about it. 
 
+```{r}
+#| label: fig-3
+#| fig-cap: Membership of the 55 parties Inclusive of Ambiguous leaving dates
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+
+graphing_membership_ambiguous$political_party <- reorder(graphing_membership_ambiguous$political_party, graphing_membership_ambiguous$number_joined)
+
+## this shows the number of people joining each party inclusive of individuals with ambiguous leaving dates
+ggplot(graphing_membership_ambiguous, aes(x = political_party, y = number_joined))+geom_bar(stat = "identity") +
+  labs(title = "Membership of the 55 parties Inclusive of Ambiguous leaving dates",
+       x = "Political Party",
+       y = "Number of People Joined")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "right")
+
+```
 
 
 # Model {#sec-model}

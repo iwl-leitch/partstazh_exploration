@@ -45,27 +45,6 @@ cleaned_years_and_parties_data <- readr::read_csv(here::here("inputs/data/raw_da
 ## this creates a new column to show the time spent in the listed parties by number of years, so we can call on this to get average times later
 cleaned_years_and_parties_data$time_spent_in_party <- cleaned_years_and_parties_data$year_left_party - cleaned_years_and_parties_data$year_joined_party
 
-
-## this filters out parties with only one member, so we can view them separately from the very small parties
-parties_with_more_than_one_recorded_member_cleaned <- cleaned_years_and_parties_data[duplicated(cleaned_years_and_parties_data$political_party)|duplicated(cleaned_years_and_parties_data$political_party, fromLast= TRUE),]
-
-## this takes the data and pares it down to political party, number of recorded members and average time spent in that party, for ease of graphing
-graphing_values_cleaned <-aggregate(time_spent_in_party ~ political_party, data = parties_with_more_than_one_recorded_member_cleaned, FUN = function(x) c(mean = mean (x), count = length(x)))
-
-graphing_values_cleaned$political_party <- reorder(graphing_values_cleaned$political_party, graphing_values_cleaned$time_spent_in_party[,"count"])
-
-graphing_values_ambiguous <- ambiguous_years_data |>
-  group_by(year_joined_party, political_party)|>
-  summarise(num_joined = n())
-
-
-graphing_membership_ambiguous <- ambiguous_years_data |>
-  group_by(political_party)|>
-  summarize(number_joined = n())
-
-graphing_membership_ambiguous$political_party <- reorder(graphing_membership_ambiguous$political_party, graphing_membership_ambiguous$number_joined)
-  
-  
 ## this takes the party codes held separate from the main data and cleans them, so removes numbers and symbols from their names
 party_codes <- readr::read_csv(here::here("inputs/data/party-cod.csv"), show_col_types = FALSE)|>
   clean_names()
@@ -81,7 +60,27 @@ combo2 <-match(ambiguous_years_data$political_party, seq_along(party_codes$id_pa
 cleaned_years_and_parties_data$political_party <-party_codes$id_party[combo1]
 
 ambiguous_years_data$political_party <-party_codes$id_party[combo2]
+
+## this filters out parties with only one member, so we can view them separately from the very small parties
+parties_with_more_than_one_recorded_member_cleaned <- cleaned_years_and_parties_data[duplicated(cleaned_years_and_parties_data$political_party)|duplicated(cleaned_years_and_parties_data$political_party, fromLast= TRUE),]
+
+
+## this takes the data and pares it down to political party, number of recorded members and average time spent in that party, for ease of graphing
+graphing_values_cleaned <-aggregate(time_spent_in_party ~ political_party, data = parties_with_more_than_one_recorded_member_cleaned, FUN = function(x) c(mean = mean (x), count = length(x)))
+
+
+graphing_values_ambiguous <- ambiguous_years_data |>
+  group_by(year_joined_party, political_party)|>
+  summarise(num_joined = n())
+
+
+graphing_membership_ambiguous <- ambiguous_years_data |>
+  group_by(political_party)|>
+  summarize(number_joined = n())
+
 #### Save data ####
 # [...UPDATE THIS...]
 # change cleaned_data to whatever name you end up with at the end of cleaning
 write.csv(cleaned_years_and_parties_data, "inputs/data/cleaned_years_and_parties_data.csv")
+write.csv(graphing_values_cleaned, "inputs/data/graphing_values_cleaned.csv")
+write.csv(graphing_membership_ambiguous, "inputs/data/graphing_membership_ambiguous.csv")

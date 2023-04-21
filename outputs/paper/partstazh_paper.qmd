@@ -1,22 +1,24 @@
 ---
-title: "An Exploration into political dynamics of Pre-Revolution Russia"
+title: "Exploring the lost parties of Pre-revolution era Russia"
 author: Iz Leitch
 thanks: "Code and data are available at: [FILL IN LATER]"
 date: "`r Sys.time()`"
 date-format: "D MMMM YYYY"
-abstract: "This paper explores the legacy of different political groups in pre-revolution Russia. By looking at number of members and length of membership we can discover the different strengths and lasting powers of minor political affiliations prior to the USSR to get a better understanding of their material impact on the Revolution and post-Revolution political landscape."
+abstract: "This paper explores the legacy of different political groups in pre-revolution Russia. It takes the data from UCLA's Social Science Data Archive Dataverse and examines the different party affiliations, their membership counts, and the amount of time people spent in these parties. It finds possible connections between minor factions and parties in the dataset, and shows evidence in favour of a more rich explanation of the formation of the Soviet leadership. This data and what can be gleaned from it is not only useful for Slavic Studies, but also in contextualizing modern politics, as the data shown here displays a clear developmental pattern as ideas from the 1800s recur and inform that period of the early 1900s, so does the 1900s inform us in the present day."
 format: pdf
 number-sections: true
 bibliography: references.bib
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
 ```{r}
 #| include: false
 #| warning: false
 #| message: false
 library(tidyverse)
 library(dplyr)
-library(knitr)
-library(janitor)
 library(scales)
 library(ggplot2)
 library(here)
@@ -36,48 +38,141 @@ graphing_membership_ambiguous <- readr::read_csv(here::here("inputs/data/graphin
 
 ```
 
-
 # Introduction
 
-What do we really know about the Russian Revolutions? 
+What do we really know about the Russian Revolutions?
 
-In this paper, using the UCLA Soviet Data Bank and crossing referencing the party ids with the party membership dataset, a deeper understanding of the complex social and political dynamics of Pre and Early-Revolution Russia can be gained beyond the simple Reds vs Whites, and Bolsheviks vs Mensheviks narratives that are so often called on when aiming to explain the political climate.@sec-background gives us the foundation to understand the major and minor players as is traditionally understood in Slavic Studies, such that we can validate or invalidate these narratives with the data presented. In @sec-data, this paper looks at all the listed parties inside the dataset as a whole, comparing the amount of people in each party, and the average duration they spend with it. In the discussion of the data, we explore the limitations of the data, and the political implications. @sec-next-steps looks toward the future and what else can be done with this information and data.
-
-You can and should cross-reference sections and sub-sections. For instance, @sec-data and @sec-first-point. 
+In this paper, using the UCLA Soviet Data Bank and crossing referencing
+the party ids with the party membership dataset, a deeper understanding
+of the complex social and political dynamics of Pre and Early-Revolution
+Russia can be gained beyond the simple Reds vs Whites, and Bolsheviks vs
+Mensheviks narratives that are so often called on when aiming to explain
+the political climate.(sec-background) gives us the foundation to
+understand the major and minor players as is traditionally understood in
+Slavic Studies, such that we can validate or invalidate these narratives
+with the data presented. In the Data portion, this paper looks at all
+the listed parties inside the dataset as a whole, comparing the amount
+of people in each party, and the average duration they spend with it. In
+the discussion of the data, we explore the limitations of the data, and
+the political implications. Lastly, Next Steps looks toward the future
+and what else can be done with this information and data.
 
 # Background {#sec-background}
 
-The formation of the Soviet Union is often portrayed in simplistic ways to cater to different narratives, and misunderstands the many nuanced perspectives going into the early days. Basically, there are two major revolutions the October and march(?) revolutions. (look into this because it is hard to explain simply) These revolutions take place in response to the mishandling of the first world war, the lack of rights, and more. This leads to the overthrow of the tsar and the dawn of the soviet era which itself is fraught with internal conflicts. 
+The formation of the Soviet Union is often portrayed in simplistic ways,
+which is in some ways understandable due to the distance both physical
+and temporal we have from the event, yet for those interested in the
+Slavic Studies field the Russian Revolution is hugely important not just
+for Russian Studies, but the whole of Slavic Studies as it greatly
+changed the social and political landscape of multiple nations covering
+multiple ethnic groups, age groups, politically affiliated groups and
+more. While in Canada where this paper is being written, most might only
+know about Stalin, Lenin and Trotsky from reading Animal Farm in Grade
+10 there is much more to understand about the situation. But coming back
+to that distance, it might be easy to ask why should I, presumably
+someone who has no Slavic background and doesn't plan on visiting any
+time soon, care about the inner workings of 1900s era bureaucrats and
+their political affiliations? And to that I might say that one need only
+turn on the news to see the continued effects of the Soviet Project's
+legacy. The mindsets that go into these political parties, no matter how
+small, often have reverberating effects throughout history, and in ways
+that some seek to shut down, as we will soon discuss in Political
+Repression, and Nationalism. But even if Grade 10 History class or its
+equivalent has now passed into the realm of history itself, have no
+fear, here is a quick run down on the common story taught about the
+Revolution.
 
-Two parties are considered important to the retelling of the revolution, the more centrist menshevik party, and the more radical bolshevik party.
+## timeline {#sec-timeline}
 
-## timeline(#sec-timeline)}
+The common story begins with the Tsar and Lenin. Prior to the Soviet
+Union, Russia was headed by an all powerful Tsar and his all powerful
+family the Romanovs. And they were very powerful, an earlier revolt in
+1825 the Decemberist Revolt (the one that caused Dostoevsky to be the
+way he turned out) was held to shift more power away from the Tsar into
+the hands of the Russian Elite. This revolt was squashed, and the elites
+who took part were sent to Siberia in exile if not outright killed.
+Forty-ish odd years later in 1861 serfdom, a form of slavery was
+overturned, giving the peasantry the ability to not be bought and sold,
+yet many of them still lived in squalid conditions. For comparison,
+England abolished serfdom in around 1574, and American Chattel Slavery
+would be abolished 4 years later by the 13th amendment in 1865. So as
+far as timelines are concerned, the end of serfdom was very recent to
+the Revolution. Though to be more exact it there were multiple
+revolutions. The first one isn't often discussed, but is useful to know
+about, the Bloody Sunday or First Revolution in 1905. This revolution
+would lead to the slaughter of around 200 workers (Clodfelter) with the
+number only going up in the following months and then years leading up
+the February Revolution.
+
+The February Revolution is next Revolution that makes up "the Communist
+Revolution" happening in March of 1917 (sidenote: The February
+Revolution happened in March because Russia used a different calendar at
+the time). This would lead to the Death of the Tsar and the formation of
+an early government, not one long for this world however as in November
+of that same year the October Revolution would begin, launching a Civil
+War not resolved until 1923. This may lead one to wonder, why would
+there be so many revolutions in "the Revolution" and who were these
+groups fighting in the Civil War? This would be due to the topic of
+today's paper, the many parties and factions inside the Russian and more
+broadly Eastern-European political world. The Civil War can also be
+called the Reds vs Whites, though that too is an oversimplification. The
+Reds as we will soon see in Data had multiple smaller factions within
+it, but largely represented the overthrow of the Tsar, with the Whites
+then being the Tsarist party, but that still doesn't explain the
+February and the October revolution. That, dear reader, was the toss up
+between the Mensheviks and the Bolsheviks.
 
 this explains the timeline, and the reds vs whites
 
 ## Mensheviks and Bolsheviks {#sec-mensh-bolsh}
-This explains the high level split in the revolutionary party between the mensheviks and Bolsheviks.
 
-notes for future self: get amount of people for each party
-length of time in each party would be interesting
-discuss politics of pre-revolution russia/soviet union, bolsheviks vs mensheviks being the major one but the factionalism at play is also very interesting
+If you have bothered to read this far, you may already know about the
+Mensheviks, however you almost certainly know about the Bolsheviks and
+that is due to the changing landscape of power between March 1917 and
+November 1917. Together the Menshevik and Bolshevik parties combined to
+be the "Reds", both working to change the rule of the Tsar over to the
+people. However a lot can be gleaned about the balance of power within
+the Revolution simply by understanding the names. Bolsheviks, named
+after bolshinstvo, or majority, literally formed the majority coaliation
+in the Red Revolution, lead by Lenin they became the winners of the
+October Revolution and the rest is history, however their little brother
+party, the more moderate Mensheviks -from menshinstvo literally
+minority, had their own role to play, even outnumbering the Bolsheviks
+at certain points in time. However these two parties are as far as one
+is likely to have heard about the proto-Revolutionary parties, something
+that this paper seeks to correct, with a look at 55 different factions
+and their memberships histories and records.
 
-include a more complete history of the revolution with regards to political identities in early 1900 era russia
-
-missing parties, we lack ukrainian representation in the data set
-
-new understandings of 1900s russian politics, mezhduraionsty party does not have significant information about it
-
-the general absence of information
-
-some people are in multiple parties
-understanding early 1900 era political surveillance
 # Data {#sec-data}
 
+In the paper I run our analysis in `R` [@citeR], with the much needed
+help from other packages such as 'readr' [@cite-readr], 'here'
+[@cite-here], 'tidyverse'[@cite-tidyverse], and 'dplyr' [@cite-dplyr].
+With ggplot [@cite-ggplot], the data can be better visualized in the
+form of graphs.
 
+The data seeks to look at the different political affiliations of
+bureaucrats in the Russian Government prior to 1923. Bureaucrats because
+that is what the data set is limited to, and because Russian and Soviet
+Union data set showing anything other than economic output are
+incredibly hard to find, and often broken up in such a way that it
+becomes hard to navigate. For example the primary data set in this
+paper, the parstazh data from UCLA {@cite-UCLA} is only navigable due to
+the presence of another data set at UCLA, the party codes data set,
+which has the reference key to the 55 parties allowing someone to
+actually know what all 55 actually reference. Last to understand before
+diving in is the nature of the data. Due to being a dataset from
+someone's personal references, from around 100 years ago, originally in
+another language, originally from a highly repressed country and region
+prone to hiding or outright destroying anything that they disagreed
+with, it is very difficult to gain a full understanding of what might be
+lost, or even destroyed about the data. The graphs I work with try to
+take data with the least missing, and then the least relevant data
+missing, but data missing is a major issue so it is important to keep
+that in mind while reading.
 
 ```{r}
-#| label: fig-one
+#| label: fig-1
 #| fig-cap: Average Time Spent In Each Party for Parties with Greater than One but Fewer than Ten Members
 #| fig-width: 8
 #| fig-height: 4
@@ -103,9 +198,13 @@ ggplot(graphing_values_cleaned_one_to_sixteen, aes(x = political_party, y = time
   
 ```
 
-Talk more about it.
-
-
+To better understand the data, it has been separated into smaller more
+manageable chunks. Let's take (@fig-1). We can see that even in
+political groups with few recorded members that there is still a
+significant time commitment at hand, with several of these minor parties
+having membership lengths over 5 years. This is even more true for when
+we look single member parties with one clocking in at over 92 years
+spent with that political affiliation.
 
 ```{r}
 #| label: fig-2
@@ -133,7 +232,85 @@ ggplot(graphing_values_cleaned_seventeen_to_twentysix, aes(x = political_party, 
 
 ```
 
-Talk way more about it. 
+Interestingly, in @fig-2 against common understanding the most complete
+data ofthe dataset shows strongest turn out for a group called RSDRP,
+followedby the Mensheviks, the Mensheviks again in the form of the
+Social Democrat Internationalists and then the Bolsheviks, the Socialist
+Revolutionary, Social Democratic Party (non-RSDRP), Mezhduraionsty,
+Jewish Bund, Pre-Social Democratic Party and the Left Socialist
+Revolutionary Party. By taking these top parties in terms of
+participation, we can see that significant Left Political involvement in
+the group surveilled to make this dataset. So what are the Parties at
+hand? We've covered two of them, the Bolsheviks and the Mensheviks in
+@sec-mensh-bolsh, but that first group the RSDRP is the party prior to
+the split that gives the Bolsheviks and Mensheviks their name in 1903.
+Because this dataset appears to have larger turn out for the RSDRP when
+in fact due to the way the data is gathered, individuals under
+surveillance can be in multiple parties, just at different times,
+something that is reflected in this statistic.
+
+More factionalism is at play with the next uncovered party the
+Menshevik/Social Democratic Internationalists Party. Preliminary
+research, that being what can be sourced without significant translation
+or emailing a Slavic Studies Professor about it, shows two parties under
+the Internationalists title, the Russian Social Democratic Party (of
+Internationalists) and the Menshevik Internationalists. It is unclear
+which of the two this is referring to, but the Menshevik
+Internationalists are a left-leaning faction within the Menshevik Party,
+and the Russian Social Democratic Party (of Internationalists) are
+themselves a splinter group of that faction. This is interesting because
+the RSDPoI as I will call them, had connections to the newspaper Novaya
+Zhizhn, which is the name of another party further down the line in
+terms of membership. Implying that the Novaya Zhizhn party is actually
+RSDPoI and the Social Democratic Internationalists are the Menshevik
+Internationalist. Slowly contextual research begins to unravel the
+mysteries at the heart of this data set. So exciting!
+
+Moving further down the list we have the Socialist Revolutionary Party,
+and its many factions later to come as well. The Socialist
+Revolutionaries were based in agrarian socialist thought. In the Russian
+context they are the successors to the Narodnik movement, a movement
+dedicated to protecting the unique relationship the Russian rurality had
+with the land. For Slavic Studies students the name might ring a bell,
+as the Narodniks come after Herzen's work, Herzen being the one to
+publish the famous (in Slavic Studies circles at least) Who is to Blame
+Paper? and being a key thought leader in the formation of Slavic
+national identities. Remember earlier, in @sec-background, I discuss the
+at the time extremely recent dissolution of serfdom? That is what lays
+the background for this unique land-people relationship fo the Narodnik
+movement, which gives way to the Socialist Revolutionary Party. This
+party along with the at the time RSDRP oppose the interim government put
+in place by the February Revolution, and like the RSDRP split into two
+factions, in the case of the Socialist Revolutionaries that would be the
+Right and Left Socialist Revolutionaries respectively.
+
+Next we have the party that is the most exciting for me personally, the
+Mezhduraionsty party. This party has no external evidence outside of
+this data set of ever existing, which is more thoroughly discussed in
+the Data Limitations portions. This party could also be incorrectly
+latinized, a possibility I raise only due to the closeness of
+Mezhduraionstry to Mezhdunarodnyy. This is important because
+Mezhdunarodnyy or Internationalism has already been raised by other
+parties as a significant issue, on the other hand the way it is
+latinized now Mezhduraionsty, Inter-district party, raises the idea of
+district factionalism being at play within the larger parties, however
+that would be difficult in the least to impirically substantiate as this
+data set is biased toward a Moscow perspective so other district
+perspectives are limited.
+
+Next on the list is the Jewish Bund, who also have their own
+significance. Unbeknownst possibly, to those in the west is the
+significance of Judaism to Russia and the Soviet Union. Originally
+proclaiming to protect the rights of its Jewish citizen in part due to
+the large active Jewish Socialist Bund. Of course later this group would
+be dissolved during the Civil War and its attempts to assimilate smaller
+factions within itself, leading to many a negative outcome too graphic
+to discuss here, but an important party nonetheless.
+
+Last in line is the Left Socialist Revolutionaries, already discussed as
+a faction of the Socialist Revolutionaries, and the Pre-Social
+Democratic Party which is lost to time along with the Mezhduraionsty
+Party.
 
 ```{r}
 #| label: fig-3
@@ -153,64 +330,459 @@ ggplot(graphing_membership_ambiguous, aes(x = political_party, y = number_joined
 
 ```
 
+Now @fig-1 and @fig-2 may have looked at the more complete data, those
+with complete parties, start years and end years, but it is in the more
+ambiguous data that we can really see the truth. Where @fig-2 shows few
+participants in Bolshevik movement, @fig-3 shows the divide between that
+party leading up to the Revolution and all the others. This is likely
+due to the Bolsheviks winning the October Revolution so to speak and
+coming out ahead of the other parties that it became specifically hard
+to place an end year on people's involvement, as that is what this data
+looks at, member involvement regardless of year left.That being said,
+this still shows the involvement of the parties discussed above, the
+Mensheviks, Pre-Social Democratic Party, Mezhduraionsty Party, RSDRP,
+RSDPoI, and Jewish Bund, with a new group the SDKPiL, or Social
+Democracy of the Kingdom of Poland and Lithuania, rising in membership
+count to join the top 10 in terms of membership. Notably this party seen
+in @fig-1 is unique due to it's long term commitment to the party,
+averaging around 15 years spread over just under 10 members.
 
 # Model {#sec-model}
 
-$$
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}
-$$ {#eq-bayes}
+We can model the difference in memberships inclusive of ambiguous data
+with an exponential growth equation. However I will be honest, if you
+have read this far you can probably tell that I'm not that good at math.
+The Exponential Equation is as follows, where $x_0$ is the starting value, so I assume 1 in this case, r is the rate of growth and t is the discrete changes.
+$ x_{t}=x_{0}(1+r)^{t}$
 
-@eq-bayes seems useful, eh?
-
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
+Exponential growth is useful for understanding the sheer size difference of the participation, and closely aligns with the dramatic change in participation across the 55 parties. 
 
 # Results
+
+The results of this investigation into the political participation of
+Early 1900s Era Russia show a strong lineage of political thinking over
+the many splinter factions arising from the February and October
+Revolutions.
 
 # Discussion {#sec-discussion}
 
 ## Data Limitations {#sec-data-limit}
 
-this discusses the limitations of the dataset
+Of course, we must discuss the limitations of this dataset, and there
+are quite a few. After all for all the hard work that has been put in
+the nature of data across so many boundaries, many of which were not as
+open as they are today and many which are closing up again, there is
+only so much that can be done to get workable data. One of these
+unavoidable issues is the issue of translation. Due to the alphabet
+difference, that being the difference between Cyrillic and Latin
+characters, the names of certain parties are not perfectly preserved,
+instead latinized. Latinization isn't wholly a bad thing but the use of
+translation is inconsistent across the data, parties like Novaya Zhizhn
+are left latinized but untranslated where other parties like the Left
+Social Revolutionary Party is translated. This creates confusion and
+leaves room for error. It also makes it difficult for English speakers,
+at whom this data is targeted for to understand the political
+implications of each Party. A party like Novaya Zhizhn makes sense only
+if you know enough Russian to translate it, but the dataset isn't
+primarily for a Russian speaking audience, most of the names of parties
+are fully translated, so there is the loss of context on that one.
 
-### Missing Data {@sec-miss-data}
+More egregious is one of the more populated parties in this dataset.
+Even making it to the top 10 populated parties in the less ambiguous
+data, the Mezhduraionsty party leaves behind no traces under that name
+in English or in Russian. This leaves open the potential for it being
+incorrectly latinized, or that the history of this party, in its state
+now loosely translated to the inter district party, but this doesn't
+bring up anything either. However if it was translated into English like
+the other parties, that could take away the potential for latinization
+errors, for example, before getting an amalgamated translation of inter
+district party, I considered this an incorrect latinization for
+mezhdunarodny party, or international party. Both of these have wildly
+different implications for the dataset, yet because it's not in Cyrillic
+or translated neither can be fully accepted or ruled out. Translating
+these parties could even be an interesting place to explain the naming
+behind such party. Instead this party is almost entirely lost and
+forgotten about, only referenced in this dataset and no-where else
+online in English or Russian.
 
-### Bias in Sample {@sec-sample-bias}
+Another interesting quirk of the data would be the inconsistent use of
+nicknames and abbreviations for parties. In this category we can see
+SKDPiL and the Kadets, respectively the Social Democracy of the Kingdom
+of Poland and Lithuania and the Constitutional Democratic Party
+respectively. While the nicknames can be useful for taking down the
+information, in a list with so many parties lost to time completely, the
+use of nicknames and abbreviations means that this data is likely to get
+harder to understand for future generations, limiting possible
+understanding. Also the abbreviations and nicknames give no explanation
+for the actual party politics behind them, where Social Democracy of the
+Kingdom of Poland and Lithuania, and Constitutional Democratic Party
+both hint at those policies and what makes them interesting as parties.
 
-### Political Repression {@sec-pol-repress}
+### Bias in Sample {#sec-sample-bias}
+
+Of course key to discussing the data is discussing how it was gathered.
+While the data here is plentiful it only looks at a specific group in
+pre revolutionary Russian society, that of the low level bureaucrat,
+subject to political surveillance. Obviously, as the Russian Revolutions
+are people's Revolution the lack of representation for the working and
+agrarian classes is a highly felt loss. The lack of this is impossible
+to understate for the issue of Political Representation in early 1900s
+Era Russia.
+
+Another element of bias in the data is again in the sample, with the
+whole of the UCLA Soviet Data Bank being taken largely from the files of
+Vsia Moskva (Seeing Moscow/Watching Moscow), this means that it is
+highly biased towards the goings on of Moscow in particular, leaving out
+and minimizing the impact of other vibrant cultural centers in Russia
+like St.Petersburg, Novgorod, and the impacts of Rural thought in the
+more distant districts. This also means it has a strong national bias,
+as will be discussed in the Nationalism section. While that isn't
+necessarily an issue as this paper looks at the issue of Political
+Participation from a Russian Standpoint, it contributes to the continued
+and ongoing erasure of Ukraine from Eastern European history and thought
+as a whole.
+
+### Missing Data {#sec-miss-data}
+
+Missing Data is second only to Sampling Bias in terms of what plagues
+this data. Of course we have gone over the parties with no recorded
+history outside this data set, but there are likely parties recorded in
+history not represented here due to time, and the inevitable loss of
+information that comes with it, as well as due to the many challenges of
+translation and naming discussed within @sec-data-limit. The problem
+with missing data is that it cannot be filled in. Like with the
+ambiguous leaving dates in @fig-3, we can only speculate as to what
+might be the reason for that missing data, if we can tell it is there at
+all. A key one that I can speak to based on my time with Slavic Studies
+Scholar and Kiyvenite himself Professor. Koznarsky is the lack of
+Ukrainian representation in the data set. This lack is keenly felt
+because prior to the Ukrainian-Soviet war there was a short lived
+Ukrainian People's Republic, autonomous separate from the soviet union.
+This lack is so important now because the eventual fate of the Ukrainian
+Peoples Republic was losing autonomy to Russia in the form of
+Ukrainian-Soviet war, and due to the erasure of Ukrainian Socialism and
+Socialists as a whole, many who opposed losing their national autonomy.
+Instead the common narrative shows a strong and decisive Soviet Union
+sweeping in and overtaking the last of Tsarist Supporters in Ukraine,
+when that is simply not the case.
 
 ## Nationalism {#sec-national}
 
+Another prevailing theme of the data is nationalist sentiments and
+nationalism. Nationalism in Eastern Europe was fairly new at the time as
+the concept of nationhood and nationality spread to slavdom in the late
+18 early 1900s. Out of the 55 listed parties x of them directly
+reference a specific country as a uniting theme. This tendency toward
+nationalism becomes a key theme as the early soviet union spread out of
+russia, conquering and absorbing nearby countries and ethnic groups in
+its own nation building project. Yet the largest parties the Bolsheviks
+and Mensheviks have no explicit ties to any nation. This lack of
+national thinking isn't lack of national thinking, but rather the
+formation of a new nation in the making the Soviet Union, one that would
+necessitate breaking up and absorbing the national identities of the
+countries it would absorb during the Civil War.
+
+The lack of Ukrainian nationalism on a list that includes other
+nationality based parties is particularly striking due to the rise in
+desire for Ukrainian autonomy in the form of the Ukrainian peoples
+republic and due to Ukraine's history of being subsumed by the Russian
+narrative. It is then worth speculating whether that lack of presence in
+this data is accidental or if records were erased as was commonplace
+during the time of the Soviet Union. After all while we are looking at
+data from the pre Soviet period we are living in the post Soviet period
+and are unable at the moment to fully know the depth and breadth of what
+has been lost or intentionally destroyed during that time.
 
 ## Longevity
 
-## Major Players
-
-## Minor Players
+Another prevailing theme of the data is nationalist sentiments and
+nationalism. Nationalism in Eastern Europe was fairly new at the time as
+the concept of nationhood and nationality spread to slavdom in the late
+18 early 1900s. Out of the 55 listed parties x of them directly
+reference a specific country as a uniting theme. This tendency toward
+nationalism becomes a key theme as the early soviet union spread out of
+russia, conquering and absorbing nearby countries and ethnic groups in
+its own nation building project. Yet the largest parties the Bolsheviks
+and Mensheviks have no explicit ties to any nation. This lack of
+national thinking isn't lack of national thinking, but rather the
+formation of a new nation in the making the Soviet Union, one that would
+necessitate breaking up and absorbing the national identities of the
+countries it would absorb during the Civil War.
 
 # Next steps {#sec-next-steps}
 
-Weaknesses and next steps should also be included.
+Here is where we look toward the future, hopefully a better, more
+nuanced one, and what else can be done with the data. In this paper I
+allude to the possibility of the Mezhduraionsty party existing due to
+possible district bias in the Menshevik and Bolshevik Parties, and I
+discussed how this would be hard to do with the data at hand and its
+Moscow bias, that being said the original data set does include Province
+joined and Locale joined with only one issue, and it is a major issue.
+Like the party tracking in the original data set, the Province joined
+and locale joined values are all stored as numbers, with no clear code
+for what those numbers are referring to. I'm sure with thorough enough
+cross-referencing a hypothesis as to what those Provinces and locales
+are could be made, likely using Zipf's law or something similar.
+
+Furthermore work into discovering what the Mezhduraionsty party actually
+refers to and what they did would open up new avenues into understanding
+Socialist factionalism in the early 1900s period, but would likely
+require a plane ticket and a lot of time to go through the archives of
+that period, many of which are currently in Russia and inaccessible.
+
+Lastly, for further development, using these parties to draw out
+political lineages would be very interesting, and help illuminate the
+way that these parties shape and continue to shape one another.
+
+As well, with Slavic Studies there is always further reading to be done.
+For those reading this paper and not writing it, here is a suggested
+further reading to enhance your nuanced thinking on Soviet Politics
+beyond the Red-Scare level thinking often perpetuated about this period.
+
+## Further Reading
+
+I recommend Isaac Babel's Red Calvalry for greater understanding of the
+Civil War and the Bolshevik Perspective. As well Babel while he was
+alive was Jewish and wrote another group of short stories often
+collected with Red Calvalry called Tales from Odessa, Odessa being a
+city with a strong Jewish history in Ukraine. His life and works shed
+light on the Jewish experience of the Revolution, the good and the bad.
+
+On the other hand, this paper almost entirely discusses the Left side of
+the Revolution, as that was what was largely being surveilled for, on
+the other hand to learn more about the Whites first hand, Mikhail
+Bulgakov's White Guard shows the political tension in Ukraine during the
+Civil War from the perspective of a Tsarist supporter as Bulgakov was
+when he was alive. It closely takes from his own personal life and while
+it isn't beating his magnum opus The Master and Margherita, it certainly
+has it's own merit.
+
+For understanding Narodniks, who lead into the Socialist Revolutionary
+Party, I already mentioned Herzen, but Herzen's Who is to Blame? is
+highly significant in the development of Socialist Agrarian philosophy,
+with some even going on to say he is the father of Socialism.
+
+Moving forward in time to the present, Kristen Ghodsee's Red Hangover is
+an excellent work covering our Post-Soviet Perspective and shines a
+light on why not everyone is pro-capitalism in ex-Soviet countries.
+
+And if we want to go into the past and the future at the same time,
+little remembered now but foundational at the time Bogdanov's Red Star
+which outlines life on Communist Mars is useful for anyone looking back
+through the bloodshed and murder of the Soviet Union who's thinking, why
+would anyone ever want that? Well, they didn't want the bloodshed, and
+the Bogdanov's dreams of a post-gender, post-money, post-space travel
+society shine a light on what people were beginning to believe was
+possible at the time, with Bogdanov himself being a key early communist
+figure worth looking into.
+
 # Conclusion
 
-# Acknowledgements 
+In conclusion, a lot can be learned from this
 
+# Acknowledgements
 
-\newpage
+I would like to acknowledge the hard work of the people at UCLA for
+putting these and many more interesting Soviet and Pre-Soviet Era
+datasets together, and Harvard for hosting them in such a way that
+wayward Canadian Slavic Studies students such as myself can access them.
+When it comes to Soviet material the instinct is often to keep it
+hidden, but fighting against that instinct is much appreciated. I would
+also like to acknowledge the work of Professor. Koznarsky for teaching
+Kyiv: the City of Saints and Sinners which is where my knowledge of the
+Ukrainian People's Republic has come from, as of most of my knowledge
+about Ukraine, and Professor. Obradovic who taught the Slavic
+Civilizations course when I was there which informs my understanding of
+the development of national identity among the Slavic people circa the
+early 1900s. Last of the Professors but certainly not the least, this
+paper exists entirely in due to the hard work of Professor. Alexander,
+otherwise the author would not know enough R for this to exist. All
+Professors can currently be found at the University of Toronto.
+
+On the other hand, less intellectually I will fess up and acknowledge
+Wikipedia for helping me find any evidence of many of these parties even
+existing. Google, for being the central repository of information I used
+to confirm things have no evidence of existing, and ChatGPT for bouncing
+code ideas off of when no one else is around. \newpage
 
 \appendix
 
-# Appendix {-}
-
+# Appendix {.unnumbered}
 
 # Additional details
 
+List of all 55 parties and what they are about:
+
+1.  Bolsheviks: This is the majority party when talking about Revolution
+    Era politic. A more extreme party helmed by Vladimir Lenin. They
+    would lead the October Revolution and the formation of the Soviet
+    Union
+
+2.  Mensheviks: The minority party to the Bolsheviks majority. More
+    moderate.
+
+3.  Populist:
+
+4.  People's Will: Left-wing terrorist group which conducted
+    assassinations in attempt to overthrow the Tsar.
+
+5.  Socialist Revolutionary: Building from the Narodnik movement, the
+    represent agrarian Socialism and were a fairly large party.
+
+6.  Right Socialist Revolutionary: Half of the split when the Socialist
+    Revolutionary Party broke up.
+
+7.  Left Socialist Revolutionary: The other half of the split.
+
+8.  Anarchist:
+
+9.  Mezhduraionsty: Discussed above, but this party has no evidence of
+    ever existing. However it is the top 10 of the 55 parties listed in
+    terms of membership. It really makes you wonder what has been lost,
+    or if it was lost in translation. Though my Russian is only
+    intermediate, preliminary searches in Russian also yield no results,
+    however, it is possible that this is actually supposed to say
+    mezhdunarodny party, which would make more sense, mezhdunarodny
+    being the word for international, making this the international
+    party. That being said this only speculation, neither interpretation
+    yield any useful results or historical evidence to their existence.
+
+10. Kadet: The Kadets, fro K-D a shortening of Constitutional Democratic
+    Party, had a more significant role in politics than this data-set
+    would suggest, though their absence is fascinating nonetheless. This
+    party was significant in the in-between government between the
+    February and October Revolutions, and by early research findings
+    appears to be largely positive toward maintaining the autonomy of
+    the different factions and ethnic groups.
+
+11. Pre-Social Democratic: No evidence of this one.
+
+12. RSDRP (joint-group): This is the party that the Bolsheviks and
+    Mensheviks originate from.
+
+13. Social Democratic (non-RSDRP):
+
+14. Dashnaktsutiun Party: Armenian Nationalist Party
+
+15. League of Lithuanian Workers: A nationalist workers party,
+    specifiying in Lithuainians
+
+16. Anarchist-Communist:
+
+17. Proletariat Party (Poland): What it says on the tin.
+
+18. Anarcho-Syndicalist:
+
+19. Polish Socialist Party: A nationalist socialist party, this time for
+    Poland.
+
+20. SDKPiL: Stands for Social Democracy of the Kingdom of Poland and
+    Lithuania, so nationalist again. This one would cease operations
+    in 1918. 1918 being significant due to being in the middle of the
+    Civil War and also during the Ukraine-Soviet War. During this time
+    there is a lot of Soviet expansion into otherwise sovereign nations.
+
+21. Menshevik/Social Democrat Internationalists: This one seems to be a
+    Menshevik splinter group, and the presence of Social Democrat
+    Internationalists on this list furthers the theory of the
+    Mezhduraionsty party actually being the Internationalists party.
+
+22. Latvian Social Democrats:
+
+23. Borot'sbisty: This party also has no evidence it ever existed, and
+    my Russian knowledge in this case hasn't helped find any possible
+    alternatives either. Side note: don't look this one up in public.
+
+24. Jewish Bund: This group is highly significant.
+
+25. Trudoviki (Labour Group): Another Agrarian Socialist party, this one
+    had influence in the February Revolution interim government, before
+    being ousted.
+
+26. Lithuanian Social Democrats: Yet more nationalist parties.
+    Lithuanian again this time.
+
+27. Popular Socialist Party: Not that popular as evidenced by the data.
+
+28. Gummet:
+
+29. Communist Workers Party of Poland:
+
+30. Young Bukhara Party:
+
+31. Edinstvo Group:
+
+32. Rumanian Social Democratic Party:
+
+33. Social Democratic Amalgamationists:
+
+34. Socialist Revolutionary Maximalists:
+
+35. Menshevik Defensists:
+
+36. Polish Communist Party:
+
+37. Rabochie Znamia:
+
+38. Zemstvo Movement: A Zemstvo is something you may know about if you
+    read Anna Karenina. The Zemstvo's were the small local governments
+    often focused on agriculture and represented a sort of pre-modern
+    thinking. Also pro-serfdom thinking depending on the time period.
+    This inclusion is interesting because while the Zemstvo's no longer
+    had the same importance as under serfdom, the party still existed.
+    It goes to show the way that past political movements continue to
+    affect the present.
+
+39. Legal Marxists: named from their role in legal publications.
+
+40. British Socialist Party
+
+41. Workers and Peasants Socialist Party: probable mistranslation, the
+    only Workers and Peasants Socialist Party is from France in the
+    1930s, so either this party preceded that and no one knows about it,
+    which is possible a lot of Russian immigrated to France during the
+    Revolution and subsequent Civil War, or this is the wrong
+    name/mistranslation/no evidence.
+
+42. Hrchak: No evidence of this one existing and you can look this one
+    up, it's pictures of hamsters.
+
+43. Specificists: No evidence of this one
+
+44. Communist Populist Party
+
+45. Swiss Social Democratic Party
+
+46. Galician Social Democratic Party
+
+47. German Social Democratic Party
+
+48. Popular Freedom Party: No evidence of this one, though there is a
+    modern party with a similar name, there seems to be no connection.
+
+49. Renaissance League: This party is interesting because due to the
+    Mongol invasion and subsequent trade route destruction, Russia
+    didn't actually experience a "Renaissance" instead medieval style
+    iconography persisted up until the Europeanization of Peter the
+    Great.
+
+50. All-Siberian Peasant Union: No evidence, could refer to any number
+    of peasant uprisings.
+
+51. Krakhalk: No evidence, possible incorrect latinization.
+
+52. Novaia zhizn': This means New Life in Russian. Could be connected to
+    the non-Menshevik Internationalists or mean something else entirely.
+    Likely the Internationalists associated with Author Maxim Gorky
+    though why a newspaper is on a list of political parties is beyond
+    me.
+
+53. Mesame Dasi: Georgian Social Democratic Party
+
+54. Finnish Social Democratic Party
+
+55. Finnish Communist Party:
 
 \newpage
 
-
 # References
-
-

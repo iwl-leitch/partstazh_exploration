@@ -1,16 +1,13 @@
 # Starter folder
 
-## Overview
+This paper explores this dataset at this link from the Harvard Dataverse: https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/ZZPLC0/4PQLYH&version=4.0 
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
+It is required to download this to follow along with this paper, the site has its own special disclaimers for you to read through I won't repeat here but it is necessary to read and understand it before downloading. 
 
-To use this folder, click the green "Code" button", then "Download ZIP". Move the downloaded folder to where you want to work on your own computer, and then modify it to suit.
+Then follow through with 01-Download data and 02-Data Cleaning to get usable data formatted in a way where graphs can be made. 
 
-## File Structure
+It is beneficial to know enough Russian to move between Cyrrilic and Latin characters when working with this dataset, as you may want to form your own conclusions about the translations presented in this paper. 
 
-The repo is structured as:
+As well download the party code guide from this link: https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/ZZPLC0/4XOL2K&version=4.0 
 
--   `input/data` contains the data sources used in analysis including the raw data.
--   `outputs/data` contains the cleaned dataset that was constructed.
--   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate, download and clean data.
+This is what actually allows us to name the 55 parties in the parstazh data set. 

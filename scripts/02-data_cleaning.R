@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Cleans.... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Data: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the data into usable bits for graphing in the paper
+# Author: Iz Leitch
+# Data: 20 April 2023
+# Contact: i.leitch@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Download the data and complete the 01 Download Data Set
+# Good Luck!
 
 
 #### Workspace setup ####
@@ -18,18 +18,6 @@ library(dplyr)
 raw_data <- read_csv("inputs/data/raw_data.csv")
 #### Clean data ####
 # [...UPDATE THIS...]
-
-## this leaves in the unknown years, but not the unknown parties, this is useful because the removing the unknown years can skew the participation metrics, as some parties have huge participation but terrible follow up on time left due to reasons explored in the paper
-ambiguous_years_data <-readr::read_csv(here::here("inputs/data/raw_data.csv"), show_col_types = FALSE) |>
-  clean_names()|>
-  select(id, year_joined_party, political_party, year_left_party)|>
-  filter(political_party >= 0)|>
-  filter(year_joined_party < 1923)|>
-  filter(year_joined_party >= 0)
-
-## because the data uses -9 instead of N/A to represent unknowns, this just changes it to N/A to be more readable
-ambiguous_years_data$year_left_party <- replace(cleaned_parties_only_data$year_left_party, cleaned_parties_only_data$year_left_party < 0, NA)
-
 
 
 
@@ -44,6 +32,18 @@ cleaned_years_and_parties_data <- readr::read_csv(here::here("inputs/data/raw_da
 
 ## this creates a new column to show the time spent in the listed parties by number of years, so we can call on this to get average times later
 cleaned_years_and_parties_data$time_spent_in_party <- cleaned_years_and_parties_data$year_left_party - cleaned_years_and_parties_data$year_joined_party
+
+
+## this leaves in the unknown years, but not the unknown parties, this is useful because the removing the unknown years can skew the participation metrics, as some parties have huge participation but terrible follow up on time left due to reasons explored in the paper
+ambiguous_years_data <-readr::read_csv(here::here("inputs/data/raw_data.csv"), show_col_types = FALSE) |>
+  clean_names()|>
+  select(id, year_joined_party, political_party, year_left_party)|>
+  filter(political_party >= 0)|>
+  filter(year_joined_party < 1923)|>
+  filter(year_joined_party >= 0)
+
+## because the data uses -9 instead of N/A to represent unknowns, this just changes it to N/A to be more readable
+ambiguous_years_data$year_left_party <- replace(cleaned_parties_only_data$year_left_party, cleaned_parties_only_data$year_left_party < 0, NA)
 
 ## this takes the party codes held separate from the main data and cleans them, so removes numbers and symbols from their names
 party_codes <- readr::read_csv(here::here("inputs/data/party-cod.csv"), show_col_types = FALSE)|>
